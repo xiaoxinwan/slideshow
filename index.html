@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//code.jquery.com/jquery-2.1.1.min.js"></script>
+  <meta charset="utf-8">
+  <title>slideshow</title>
+  <style>
+    .images{
+      display: flex;
+      align-items: flex-start;
+      transition:all 0.5s;
+    }
+    .images > img{
+      vertical-align: top;
+    }
+    .window{
+      width:300px;
+      overflow:hidden;
+    }
+    .red{
+        color: red;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="images" id=images>
+      <img src="https://i.loli.net/2018/08/13/5b713933cb843.jpg" width=300px alt="图1">
+      <img src="https://i.loli.net/2018/08/13/5b713933dbe7e.jpg" width=300px alt="图2">
+      <img src="https://i.loli.net/2018/08/13/5b713933e90fb.jpg" width=300px alt="图3">
+      <img src="https://i.loli.net/2018/08/16/5b74dbac1f301.jpg" width=300px alt="图4">
+    </div>
+  </div>
+  <span id=buttons>
+    <span>第1张</span>
+    <span>第2张</span>
+    <span>第3张</span>
+    <span>第4张</span>
+  </span>
+  <script>
+    var allButtons = $('#buttons > span')
+
+for(let i=0; i<allButtons.length; i++){
+  $(allButtons[i]).on('click',function(x){
+    var index = $(x.currentTarget).index()
+    var px = index * -300
+    $('#images').css({
+      transform: 'translate(' + px + 'px)'
+    })
+    n = index
+    activeButton(allButtons.eq(n))
+  })
+}
+
+var n = 0
+var size = allButtons.length
+allButtons.eq(n % size).trigger('click')
+  
+var timeId = setTimer()
+
+function setTimer(){
+  return setInterval(() => {
+    n += 1
+    allButtons.eq(n % size).trigger('click')
+  },2000)
+}
+
+function activeButton($button){
+  $button
+    .addClass('red')
+    .siblings('.red').removeClass('red')
+}
+
+$('.window').on('mouseenter',function(){
+  window.clearInterval(timeId)
+})
+
+$('.window').on('mouseleave',function(){
+  timeId = setTimer()
+})
+  </script>
+</body>
+</html>
